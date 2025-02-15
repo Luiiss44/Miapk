@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16dp"
+    tools:context=".RegisterActivity">
+
+    <!-- Guideline horizontal para el logo (35% de la pantalla) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <!-- Logo superior -->
+    <ImageView
+        android:id="@+id/imagenRegistro"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/editNombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/user"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_nombre"
+        android:inputType="textPersonName"
+        android:textColor="@android:color/black"
+        android:drawablePadding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal" />
+
+    <EditText
+        android:id="@+id/editCorreoReg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/email"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_correo"
+        android:inputType="textEmailAddress"
+        android:textColor="@android:color/black"
+        android:drawablePadding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editNombre" />
+
+    <EditText
+        android:id="@+id/editPassReg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/pass"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_pass"
+        android:inputType="textPassword"
+        android:textColor="@android:color/black"
+        android:drawablePadding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editCorreoReg" />
+
+    <EditText
+        android:id="@+id/editPassConfirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/pass"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_pass_confirm"
+        android:inputType="textPassword"
+        android:textColor="@android:color/black"
+        android:drawablePadding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editPassReg" />
+
+
+    <!-- Spinner para perfil/rol -->
+    <Spinner
+        android:id="@+id/spinnerPerfilReg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:entries="@array/perfiles"
+        android:padding="8dp"
+        android:minHeight="48dp"
+        android:background="@android:drawable/btn_dropdown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editPassConfirm" />
+
+
+    <!-- CheckBox términos y condiciones -->
+    <CheckBox
+        android:id="@+id/checkTerminos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:minHeight="48dp"
+        android:text="@string/checkbox_terminos"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerPerfilReg" />
+
+    <!-- Contenedor para los botones -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkTerminos">
+
+        <!-- Botón Cancelar -->
+        <Button
+            android:id="@+id/btnCancelarRegistro"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/btn_cancelar" />
+
+        <!-- Botón Registrar -->
+        <Button
+            android:id="@+id/btnRegistrarUsuario"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/btn_registrar" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
