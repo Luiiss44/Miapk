@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 
         check = findViewById(R.id.checkInicio)
         butonLogin = findViewById(R.id.btnLogin)
-        spinnerPerfil = findViewById(R.id.spinnerPerfil)
 
         // ENLAZAMOS TAMBIÉN btnRegistro
         butonRegistro = findViewById(R.id.btnRegistro)

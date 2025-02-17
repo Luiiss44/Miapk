@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <resources>
-        <string name="app_name">Miapk</string>
-
-        <!-- Textos para la pantalla de registro -->
-        <string name="hint_nombre">Enter your name</string>
-        <string name="hint_correo">Enter your email</string>
-        <string name="hint_pass">Enter your password</string>
-        <string name="hint_pass_confirm">Confirm your password</string>
-        <string name="checkbox_terminos">I accept the terms and conditions</string>
-        <string name="btn_registrar">Register</string>
-        <string name="btn_cancelar">Cancel</string>
-
-
-        <string-array name="perfiles">
-            <item>Administrador</item>
-            <item>Usuario</item>
-        </string-array>
-    </resources>
+    
 </resources>
