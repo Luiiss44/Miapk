@@ -46,13 +46,28 @@ class MainActivity : AppCompatActivity() {
         // ENLAZAMOS TAMBIÉN btnRegistro
         butonRegistro = findViewById(R.id.btnRegistro)
 
+
+
         acciones()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        editCorreo.text.clear()
+        editPass.text.clear()
+        check.isChecked = false
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     private fun acciones() {
         check.setOnCheckedChangeListener { _, b ->
             butonLogin.isEnabled = b
         }
+
+
 
         // Acción para botón "Inicio"
         butonLogin.setOnClickListener {
@@ -78,5 +93,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+
     }
 }
