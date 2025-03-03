@@ -5,16 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="48dp"
-    >
+    android:padding="24dp"
+    tools:context=".MainActivity">
 
-
-    <!---->
     <ImageView
-        android:scaleType="centerCrop"
         android:id="@+id/imagenLogin"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,8 +25,8 @@
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/user"
         android:gravity="center"
-        android:hint="introduce correo"
-        android:inputType="textEmailAddress"
+        android:hint="@string/hint_mail"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="@+id/imagenLogin"
         app:layout_constraintStart_toStartOf="@+id/imagenLogin"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -40,7 +38,7 @@
         android:layout_marginTop="12dp"
         android:drawableStart="@drawable/pass"
         android:gravity="center"
-        android:hint="introduce pass"
+        android:hint="@string/hint_pass"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/editCorreo"
         app:layout_constraintStart_toStartOf="@+id/editCorreo"
@@ -52,41 +50,44 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:entries="@array/perfiles"
+        android:minHeight="48dp"
+        android:paddingVertical="8dp"
         app:layout_constraintEnd_toEndOf="@+id/editPass"
         app:layout_constraintStart_toStartOf="@+id/editPass"
         app:layout_constraintTop_toBottomOf="@+id/editPass" />
 
     <CheckBox
         android:id="@+id/checkInicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Permitir inicio"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerPerfil"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPerfil" />
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:text="@string/check_inicio"
+    app:layout_constraintEnd_toEndOf="@+id/spinnerPerfil"
+    app:layout_constraintTop_toBottomOf="@+id/spinnerPerfil" />
 
     <Button
-        android:enabled="false"
-        android:layout_marginStart="5dp"
-        android:id="@+id/btnLogin"
+        android:backgroundTint="@color/black"
+        android:layout_marginEnd="12dp"
+        android:id="@+id/btnRegistro"
+        android:text="@string/btn_registro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Inicio"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/checkInicio"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPerfil"
         app:layout_constraintTop_toBottomOf="@+id/checkInicio" />
 
     <Button
-        android:layout_marginEnd="5dp"
-        android:id="@+id/btnRegistro"
+        android:backgroundTint="@color/black"
+        android:layout_marginStart="12dp"
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Registro"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/spinnerPerfil"
-        app:layout_constraintTop_toTopOf="@+id/btnLogin" />
+        android:text="@string/btn_inicio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/checkInicio"
+    app:layout_constraintStart_toStartOf="@+id/guideline3"
+    app:layout_constraintTop_toBottomOf="@+id/checkInicio" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -96,11 +97,10 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
