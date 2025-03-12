@@ -9,7 +9,7 @@
     <string name="checkbox_terminos">Acepto los términos y condiciones</string>
     <string name="btn_registrar">Registrar</string>
     <string name="btn_cancelar">Cancelar</string>
-
+    <string name="contact_image">Contact Image</string>
     <string name="hint_mail">introduce tu correo</string>
     <string name="check_inicio">Activar inicio</string>
     <string name="btn_registro">registro</string>

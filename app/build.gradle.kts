@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation (libs.google.gson)
+    implementation(libs.volley)
     implementation (libs.github.glide)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

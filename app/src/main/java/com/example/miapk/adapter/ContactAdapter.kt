@@ -1,50 +1,104 @@
 package com.example.inicio.adapter
 
-import com.example.miapk.R
-import com.example.miapk.model.Contact
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import com.example.miapk.R
+import com.example.miapk.model.ContactJSON
+import com.example.miapk.ui.activity.DetailActivity
 
-
-class ContactAdapter(var lista: List<Contact>, var context: Context):
+class ContactAdapter(private val lista: MutableList<ContactJSON>, private val context: Context) :
     RecyclerView.Adapter<ContactAdapter.MyHolder>() {
-    inner class MyHolder(itemView:View): ViewHolder(itemView) {
-        // representa el patron de cada una de las filas -> XML
-        // la extraccion de cada uno de los elementos del patron
-        // TODO poner la imagen via CDN
-        val imagen = itemView.findViewById<ImageView>(R.id.imageCard)
+
+    inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imagen: ImageView = itemView.findViewById(R.id.imageCard)
         val toolbar: Toolbar = itemView.findViewById(R.id.toolbarCard)
         val textPhone: TextView = itemView.findViewById(R.id.textCard)
-        // TODO poner un menu en cada toolbar
+
+        init {
+            toolbar.inflateMenu(R.menu.contact_menu)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        // obtener el item_recycler de alguna forma para poder retornar el holder
-        val vista: View = LayoutInflater.from(context)
-            .inflate(R.layout.item_recycler,parent,false)
+        val vista = LayoutInflater.from(context).inflate(R.layout.item_recycler, parent, false)
         return MyHolder(vista)
     }
-    override fun getItemCount(): Int {
-        // cuantos elementos tengo -> cuantas filas se renderizan
-        return lista.size
-    }
 
+    override fun getItemCount(): Int = lista.size
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        // asociar parte grafica (holder) con los datos (el que le toca)
         val contact = lista[position]
-        holder.toolbar.title = contact.nombre
-        holder.textPhone.text = contact.telefono.toString()
-        Glide.with(context).load(contact.imagen)
-            .placeholder(R.drawable.base).into(holder.imagen)
+
+        holder.toolbar.title = "${contact.firstName} ${contact.lastName}"
+        holder.textPhone.text = contact.phone ?: ""
+        Glide.with(context)
+            .load(contact.image)
+            .placeholder(R.drawable.base)
+            .into(holder.imagen)
+
+        // Configuramos el listener para el menú de cada toolbar
+        holder.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menuContactLlamar -> {
+                    val phone = contact.phone
+                    if (!phone.isNullOrEmpty()) {
+                        val callIntent = Intent(Intent.ACTION_CALL).apply {
+                            data = Uri.parse("tel:$phone")
+                        }
+                        // Verificamos si se ha concedido el permiso CALL_PHONE
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                            == PackageManager.PERMISSION_GRANTED
+                        ) {
+                            context.startActivity(callIntent)
+                        } else {
+                            Toast.makeText(context, "Permiso de llamada no concedido", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context, "Número no disponible", Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+                R.id.menuContactDetalle -> {
+                    val intent = Intent(context, DetailActivity::class.java).apply {
+                        putExtra("contact", contact)
+                    }
+                    context.startActivity(intent)
+                    true
+                }
+                R.id.menuContactEliminar -> {
+                    // Se obtiene la posición actual del holder para eliminar la carta
+                    val pos = holder.adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        removeContact(pos)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    fun addConctact(contact: ContactJSON) {
+        lista.add(contact)
+        notifyItemInserted(lista.size - 1)
+    }
+
+    private fun removeContact(position: Int) {
+        // Se elimina el contacto de la lista interna para que no se muestre en pantalla.
+        lista.removeAt(position)
+        notifyItemRemoved(position)
     }
 }
