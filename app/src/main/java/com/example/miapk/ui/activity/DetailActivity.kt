@@ -1,11 +1,15 @@
 package com.example.miapk.ui.activity
 
 import android.os.Bundle
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.miapk.R
 import com.example.miapk.databinding.ActivityDetailBinding
 import com.example.miapk.model.ContactJSON
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 
 class DetailActivity : AppCompatActivity() {
 
@@ -19,43 +23,67 @@ class DetailActivity : AppCompatActivity() {
         // Recuperamos el objeto enviado por el Intent
         val contact = intent.getSerializableExtra("contact") as? ContactJSON
 
-        contact?.let { c ->
-            // Cargamos la imagen
+        contact?.let {
+            // Cargamos la imagen del contacto
             Glide.with(this)
-                .load(c.image)
+                .load(it.image)
                 .placeholder(R.drawable.base)
                 .into(binding.imageViewDetail)
 
-            binding.textViewId.text = "ID: ${c.id}"
-            binding.textViewNombre.text = "Nombre: ${c.firstName} ${c.lastName}"
-            binding.textViewMaidenName.text = "Nombre de soltera: ${c.maidenName}"
-            binding.textViewAge.text = "Edad: ${c.age}"
-            binding.textViewGender.text = "Género: ${c.gender}"
-            binding.textViewEmail.text = "Email: ${c.email}"
-            binding.textViewPhone.text = "Teléfono: ${c.phone}"
-            binding.textViewUsername.text = "Username: ${c.username}"
-            binding.textViewPassword.text = "Password: ${c.password}"
-            binding.textViewBirthDate.text = "Fecha de nacimiento: ${c.birthDate}"
-            binding.textViewBloodGroup.text = "Grupo sanguíneo: ${c.bloodGroup}"
-            binding.textViewHeight.text = "Altura: ${c.height}"
-            binding.textViewWeight.text = "Peso: ${c.weight}"
-            binding.textViewEyeColor.text = "Color de ojos: ${c.eyeColor}"
-            binding.textViewHair.text = "Cabello: Color ${c.hair?.color}, Tipo ${c.hair?.type}"
-            binding.textViewIp.text = "IP: ${c.ip}"
-            binding.textViewAddress.text = "Dirección: ${c.address?.address}, ${c.address?.city}, ${c.address?.state}"
-            binding.textViewCoordinates.text = "Coordenadas: ${c.address?.coordinates?.lat}, ${c.address?.coordinates?.lng}"
-            binding.textViewPostalCode.text = "Código postal: ${c.address?.postalCode}"
-            binding.textViewCountry.text = "País: ${c.address?.country}"
-            binding.textViewUniversity.text = "Universidad: ${c.university}"
-            binding.textViewBank.text = "Banco: ${c.bank?.cardNumber} - ${c.bank?.cardType} - ${c.bank?.currency}"
-            binding.textViewCompany.text = "Empresa: ${c.company?.name} - ${c.company?.department} - ${c.company?.title}"
-            binding.textViewEin.text = "EIN: ${c.ein}"
-            binding.textViewSsn.text = "SSN: ${c.ssn}"
-            binding.textViewUserAgent.text = "User Agent: ${c.userAgent}"
-            binding.textViewCrypto.text = "Crypto: ${c.crypto?.coin}, ${c.crypto?.wallet}, ${c.crypto?.network}"
-            binding.textViewRole.text = "Role: ${c.role}"
+            // Convertimos el objeto a un JsonObject para recorrer sus propiedades dinámicamente
+            val gson = Gson()
+            val jsonElement = gson.toJsonTree(it)
+            if (jsonElement.isJsonObject) {
+                // Se añaden los campos dinámicamente al contenedor
+                addPropertiesToLayout(jsonElement.asJsonObject, binding.layoutDetail)
+            }
+        }
+    }
+
+    /**
+     * Función recursiva que recorre un JsonObject y añade un TextView por cada propiedad.
+     * Maneja propiedades primitivas, objetos anidados y arrays.
+     *
+     * @param jsonObject El objeto JSON a recorrer.
+     * @param layout El LinearLayout donde se agregarán los TextViews.
+     * @param indent Nivel de indentación (en píxeles) para propiedades anidadas.
+     */
+    private fun addPropertiesToLayout(jsonObject: JsonObject, layout: LinearLayout, indent: Int = 0) {
+        val context = layout.context
+        for ((key, value) in jsonObject.entrySet()) {
+            val textView = TextView(context).apply {
+                textSize = 16f
+                setPadding(indent, 8, 0, 8)
+            }
+            when {
+                value.isJsonPrimitive -> {
+                    textView.text = "$key: ${value.asString}"
+                    layout.addView(textView)
+                }
+                value.isJsonObject -> {
+                    textView.text = "$key:"
+                    layout.addView(textView)
+                    // Llamada recursiva para mostrar los campos del objeto anidado
+                    addPropertiesToLayout(value.asJsonObject, layout, indent + 16)
+                }
+                value.isJsonArray -> {
+                    textView.text = "$key:"
+                    layout.addView(textView)
+                    // Iteramos sobre cada elemento del array
+                    value.asJsonArray.forEach { element ->
+                        if (element.isJsonPrimitive) {
+                            val tv = TextView(context).apply {
+                                textSize = 16f
+                                setPadding(indent + 16, 8, 0, 8)
+                                text = "- ${element.asString}"
+                            }
+                            layout.addView(tv)
+                        } else if (element.isJsonObject) {
+                            addPropertiesToLayout(element.asJsonObject, layout, indent + 16)
+                        }
+                    }
+                }
+            }
         }
     }
 }
-
-
